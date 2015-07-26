@@ -3,6 +3,7 @@
 var app = require('app');
 var BrowserWindow = require('browser-window');
 var Menu = require('menu');
+var ipc = require('ipc');
 
 var Helper = require('./lib/helper');
 Helper.setCurrentDirectory(__dirname);
@@ -48,4 +49,16 @@ app.on('ready', function (){
     console.log('main window closed');
     mainWindow = null;
   });
+});
+// ---------------------------------------------------------
+// IPC
+
+ipc.on('post-task', function (event, name, detail) {
+  console.log('post-task received.');
+  console.log(name + ':' + detail);
+
+  // TODO: タスクをストレージに追加
+
+  // TODO: レンダラ側でリフレッシュ
+  event.sender.send('refresh-task');
 });

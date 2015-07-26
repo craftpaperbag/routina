@@ -1,3 +1,8 @@
 var ipc = require('ipc');
 
-ipc.send('aaaaa');
+$('#taskForm').on('submit', function () {
+  ipc.send('post-task',
+    $('#taskName').val(),
+    $('#taskDetail').val()
+  );
+});

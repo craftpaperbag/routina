@@ -26,7 +26,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><span class="glyphicon glyphicon-plus"></span></a></li>
-            <li><a href="#">Help</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-list"></span></a></li>
+            <li><a href="#">?</a></li>
           </ul>
         </div>
       </div>
@@ -41,20 +42,30 @@
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <input type="text">
-
           <table class="table" id="tasks">
             <thead>
               <tr>
                 <th>Task</th>
-                <th>detail</th>
+                <th>Detail</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>name...</td>
-                  <td>about this task...</td>
-                </tr>
+                <form id="taskForm" url="#">
+                  <tr>
+                    <td>
+                      <input type="text" id="taskName" placeholder="task..." class="form-control"/>
+                    </td>
+                    <td>
+                      <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
+                    </td>
+                    <td>
+                      <button type="submit" class="form-control">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </form>
             </tbody>
           </table>
 
