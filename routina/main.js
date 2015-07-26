@@ -4,26 +4,12 @@ var app = require('app');
 var BrowserWindow = require('browser-window');
 var Menu = require('menu');
 
+var Helper = require('./lib/helper');
+Helper.setCurrentDirectory(__dirname);
+
 require('crash-reporter').start();
 
 // ---------------------------------------------------------
-// original helper
-var Helper = {};
-
-Helper.url = function (path, onlyPath) {
-  var filepath = path;
-  if (path instanceof Array) { filepath = path.join('/'); }
-
-  if (onlyPath) { return __dirname + '/' + filepath; }
-  return 'file://' + __dirname + '/' + filepath;
-};
-
-Helper.filepath = function (path) {
-  return Helper.url(path, true);
-};
-
-// ---------------------------------------------------------
-
 
 // avoid GC
 var mainWindow = null;
