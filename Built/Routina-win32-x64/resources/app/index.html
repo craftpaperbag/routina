@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./vendor/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./vendor/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./vendor/lavish/lavish-bootstrap.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <title>Routina</title>
+  </head>
+
+ <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Routina</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-plus"></span></a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-list"></span></a></li>
+            <li><a href="#">?</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">My work 1</a></li>
+            <li><a href="#">Sample</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <table class="table" id="tasks">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Detail</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                <form>
+                  <tr>
+                    <td>
+                      <input type="text" id="taskName" placeholder="task..." class="form-control"/>
+                    </td>
+                    <td>
+                      <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
+                    </td>
+                    <td>
+                      <button id="postTask" type="button" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </form>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+      window.$ = window.jQuery = require('./vendor/jquery-1.11.3.min.js');
+    </script>
+    <script src="./vendor/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="./js/client.js"></script>
+  </body>
+</html>
