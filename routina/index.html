@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./vendor/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="./vendor/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./vendor/lavish/lavish-bootstrap.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <title>Routina</title>
   </head>
@@ -51,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-                <form id="taskForm" url="#">
+                <form>
                   <tr>
                     <td>
                       <input type="text" id="taskName" placeholder="task..." class="form-control"/>
@@ -60,7 +61,7 @@
                       <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
                     </td>
                     <td>
-                      <button type="submit" class="form-control">
+                      <button id="postTask" type="button" class="btn btn-primary">
                         <span class="glyphicon glyphicon-plus"></span>
                       </button>
                     </td>

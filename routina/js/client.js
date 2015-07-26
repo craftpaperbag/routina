@@ -1,6 +1,8 @@
 var ipc = require('ipc');
 
-$('#taskForm').on('submit', function () {
+console.log('client.js loaded');
+
+$('#postTask').on('click', function () {
   ipc.send('post-task',
     $('#taskName').val(),
     $('#taskDetail').val()
