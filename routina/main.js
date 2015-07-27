@@ -14,6 +14,8 @@ require('crash-reporter').start();
 
 // avoid GC
 var mainWindow = null;
+// TODO いけてないのでなんとかする
+var Storage = [];
 
 app.on('window-all-closed', function () {
   console.log('all window closed');
@@ -21,7 +23,6 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 });
-
 
 // ---------------------------------------------------------
 
@@ -58,7 +59,8 @@ ipc.on('post-task', function (event, name, detail) {
   console.log(name + ':' + detail);
 
   // TODO: タスクをストレージに追加
+  Storage.push({name: name, detail: detail});
 
   // TODO: レンダラ側でリフレッシュ
-  event.sender.send('refresh-task');
+  event.sender.send('refresh', Storage);
 });
