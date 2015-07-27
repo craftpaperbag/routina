@@ -15,10 +15,10 @@ console.log('client.js loaded');
 // 再描画
 ipc.on('refresh', function(tasks) {
   $('#tasks').html('');
-  $('#tasks').append(TAG.ul);
+  $('#tasks').append(TAG.list);
   $.each(tasks, function () {
     var task = this.name + ': ' + this.detail;
-    $('#tasks ul').append(TAG.li(task));
+    $('#tasks ul').append(TAG.item(task));
   });
 });
 
@@ -58,8 +58,8 @@ $('#postTask').on('click', function () {
 // TODO mainからリストを受け取って描画する
 
 $(function () {
-  $('#tasks').append(TAG.ul());
-  $('#tasks ul').append(TAG.li(' (no tasks)'));
+  $('#tasks').append(TAG.list());
+  $('#tasks ul').append(TAG.item('(no tasks)'));
 });
 
 //-------------------------------------------------
@@ -69,8 +69,8 @@ $(function () {
 //-------------------------------------------------
 
 var TAG = {};
-TAG.ul = function (text) { return TAG.newDom('<ul class="list-group">', text, '</ul>'); };
-TAG.li = function (text) { return TAG.newDom('<li class="list-group-item">', text, '</li>'); };
+TAG.list = function (text) { return TAG.newDom('<ul class="list-group">', text, '</ul>'); };
+TAG.item = function (text) { return TAG.newDom('<li class="list-group-item">', text, '</li>'); };
 
 TAG.newDom = function (head, text, foot) {
   if (!text) { text = ''; }
