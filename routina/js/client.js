@@ -17,8 +17,7 @@ ipc.on('refresh', function(tasks) {
   $('#tasks').html('');
   $('#tasks').append(TAG.list);
   $.each(tasks, function () {
-    var task = this.name + ': ' + this.detail;
-    $('#tasks ul').append(TAG.item(task));
+    $('#tasks .list-group').append(TAG.item(this.name, this.detail));
   });
 });
 
@@ -58,8 +57,7 @@ $('#postTask').on('click', function () {
 // TODO mainからリストを受け取って描画する
 
 $(function () {
-  $('#tasks').append(TAG.list());
-  $('#tasks ul').append(TAG.item('(no tasks)'));
+  $('#tasks').text('(no task)');
 });
 
 //-------------------------------------------------
@@ -69,8 +67,13 @@ $(function () {
 //-------------------------------------------------
 
 var TAG = {};
-TAG.list = function (text) { return TAG.newDom('<ul class="list-group">', text, '</ul>'); };
-TAG.item = function (text) { return TAG.newDom('<li class="list-group-item">', text, '</li>'); };
+TAG.list = function (text) { return TAG.newDom('<div class="list-group">', text, '</div>'); };
+TAG.item = function (name, detail) {
+  var item = TAG.newDom('<a href="#" class="list-group-item">', '','</a>');
+      item.append(TAG.newDom('<h4 class="list-group-item-heading">', name, '</h4>'));
+      item.append(TAG.newDom('<p class="list-group-item-text">', detail, '</p>'));
+  return item;
+};
 
 TAG.newDom = function (head, text, foot) {
   if (!text) { text = ''; }
