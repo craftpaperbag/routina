@@ -15,10 +15,10 @@ console.log('client.js loaded');
 // 再描画
 ipc.on('refresh', function(tasks) {
   $('#tasks').html('');
-  $('#tasks').append($('<ul></ul>'));
+  $('#tasks').append(TAG.ul);
   $.each(tasks, function () {
     var task = this.name + ': ' + this.detail;
-    $('#tasks ul').append($('<li>'+task+'</li>'));
+    $('#tasks ul').append(TAG.li(task));
   });
 });
 
@@ -49,6 +49,8 @@ $('#postTask').on('click', function () {
     $('#taskName').val(),
     $('#taskDetail').val()
   );
+  $('#taskName').val('');
+  $('#taskDetail').val('');
 });
 
 
@@ -56,9 +58,21 @@ $('#postTask').on('click', function () {
 // TODO mainからリストを受け取って描画する
 
 $(function () {
-  var $noTask = $('<span></span>', {
-    'class': 'lavel lavel-info',
-    text: 'no task',
-  });
-  $('#tasks').append($noTask);
+  $('#tasks').append(TAG.ul());
+  $('#tasks ul').append(TAG.li(' (no tasks)'));
 });
+
+//-------------------------------------------------
+//
+//              DOM handler
+//
+//-------------------------------------------------
+
+var TAG = {};
+TAG.ul = function (text) { return TAG.newDom('<ul class="list-group">', text, '</ul>'); };
+TAG.li = function (text) { return TAG.newDom('<li class="list-group-item">', text, '</li>'); };
+
+TAG.newDom = function (head, text, foot) {
+  if (!text) { text = ''; }
+  return $(head + text + foot);
+};
