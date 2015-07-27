@@ -54,12 +54,16 @@ app.on('ready', function (){
 // ---------------------------------------------------------
 // IPC
 
-ipc.on('post-task', function (event, name, detail) {
+ipc.on('post-task', function (event, groupId, name, detail) {
   console.log('post-task received.');
-  console.log(name + ':' + detail);
+  console.log(groupId + ':' + name + ':' + detail);
+
+  // groupIdからインデックスを取得
+  var index = Number(groupId.match(/[0-9]+/));
+  console.log('group index: ' + index);
 
   // TODO: タスクをストレージに追加
-  Storage.push({type: 'task', name: name, detail: detail});
+  Storage[index].tasks.push({type: 'task', name: name, detail: detail});
 
   // TODO: レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);

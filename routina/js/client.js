@@ -15,15 +15,26 @@ console.log('client.js loaded');
 // 再描画
 ipc.on('refresh', function(tasks) {
   $('#tasks').html('');
-  $.each(tasks, function () {
+  $.each(tasks, function (i) {
     switch(this.type) {
       case 'task':
         // TODO タスクはグループに属する
         console.log('ignore root task');
         break;
       case 'group':
-        $('#tasks').append(TAG.panel(this.title));
-        // TODO グループのタスクをリスト表示
+        var groupId = 'group' + i;
+        $('#tasks').append(TAG.panel(this.title, groupId));
+        // グループのタスクをリスト表示
+        $list = TAG.list();
+        $.each(this.tasks, function (i) {
+          $list.append(TAG.item(this.name, this.detail));
+        });
+        $('#tasks div#' + groupId + ' div.panel-body').append($list);
+        // タスクフォームを表示
+        $postTaskForm = $('#templatePostTask div.form-group').clone();
+        $('#tasks div#' + groupId + ' div.panel-body').append($postTaskForm);
+        // タスクフォームにイベント設定
+        $('div#'+ groupId +' #postTask').on('click', function () { postTask(groupId) });
         break;
     }
   });
@@ -57,14 +68,16 @@ $('#postGroup').on('click', function () {
 });
 
 // 投稿
-$('#postTask').on('click', function () {
+
+function postTask(groupId) {
   ipc.send('post-task',
-    $('#taskName').val(),
-    $('#taskDetail').val()
+    groupId,
+    $('div#' + groupId + ' #taskName').val(),
+    $('div#' + groupId + ' #taskDetail').val()
   );
-  $('#taskName').val('');
-  $('#taskDetail').val('');
-});
+  $('div#' + groupId + ' #taskName').val('');
+  $('div#' + groupId + ' #taskDetail').val('');
+};
 
 
 // TODO 初期化処理
@@ -82,8 +95,8 @@ $(function () {
 
 var TAG = {};
 
-TAG.panel = function (title) {
-  var panel   = TAG.newDom('<div class="panel panel-primary">', '', '</div>');
+TAG.panel = function (title, groupId) {
+  var panel   = TAG.newDom('<div class="panel panel-primary" id="' + groupId + '">', '', '</div>');
   var heading = TAG.newDom('<div class="panel-heading">', '', '</div>');
   var body    = TAG.newDom('<div class="panel-body">', '', '</div>');
   var title   = TAG.newDom('<h3 class="panel-title">', title, '</h3>');

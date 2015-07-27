@@ -70,33 +70,17 @@
             </tbody>
           </table>
 
-          <!-- post task -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Detail</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-                <form>
-                  <tr>
-                    <td>
-                      <input type="text" id="taskName" placeholder="task..." class="form-control"/>
-                    </td>
-                    <td>
-                      <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
-                    </td>
-                    <td>
-                      <button id="postTask" type="button" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-plus"></span>
-                      </button>
-                    </td>
-                  </tr>
-                </form>
-            </tbody>
-          </table>
+          <!-- template of post task -->
+          <div id="templatePostTask" style="display: none;">
+            <div class="form-group">
+              <input type="hidden" id="groupId" value=""/>
+              <input type="text" id="taskName" placeholder="task..." class="form-control"/>
+              <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
+              <button id="postTask" type="button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+            </div>
+          </div>
 
           <div id="tasks">
           </div>
