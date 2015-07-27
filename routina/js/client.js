@@ -31,7 +31,7 @@ ipc.on('refresh', function(tasks) {
         });
         $('#tasks div#' + groupId + ' div.panel-body').append($list);
         // タスクフォームを表示
-        $postTaskForm = $('#templatePostTask div.form-group').clone();
+        $postTaskForm = $('#templatePostTask div.post-task').clone();
         $('#tasks div#' + groupId + ' div.panel-body').append($postTaskForm);
         // タスクフォームにイベント設定
         $('div#'+ groupId +' #postTask').on('click', function () { postTask(groupId) });

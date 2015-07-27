@@ -72,13 +72,19 @@
 
           <!-- template of post task -->
           <div id="templatePostTask" style="display: none;">
-            <div class="form-group">
-              <input type="hidden" id="groupId" value=""/>
-              <input type="text" id="taskName" placeholder="task..." class="form-control"/>
-              <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
-              <button id="postTask" type="button" class="btn btn-primary">
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
+            <div class="post-task">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="control-label col-xs-3">new Task</label>
+                  <div class="form-inline col-xs-9">
+                    <input type="text" id="taskName" placeholder="task..." class="form-control"/>
+                    <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
+                    <button id="postTask" type="button" class="btn btn-primary">
+                      <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
 
