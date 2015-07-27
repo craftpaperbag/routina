@@ -59,7 +59,17 @@ ipc.on('post-task', function (event, name, detail) {
   console.log(name + ':' + detail);
 
   // TODO: タスクをストレージに追加
-  Storage.push({name: name, detail: detail});
+  Storage.push({type: 'task', name: name, detail: detail});
+
+  // TODO: レンダラ側でリフレッシュ
+  event.sender.send('refresh', Storage);
+});
+
+ipc.on('post-group', function (event, title) {
+  console.log('post-group received.');
+
+  // TODO: グループをストレージに追加
+  Storage.push({type: 'group', title: title, tasks: [] });
 
   // TODO: レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);

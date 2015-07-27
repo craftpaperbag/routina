@@ -15,9 +15,17 @@ console.log('client.js loaded');
 // 再描画
 ipc.on('refresh', function(tasks) {
   $('#tasks').html('');
-  $('#tasks').append(TAG.list);
   $.each(tasks, function () {
-    $('#tasks .list-group').append(TAG.item(this.name, this.detail));
+    switch(this.type) {
+      case 'task':
+        // TODO タスクはグループに属する
+        console.log('ignore root task');
+        break;
+      case 'group':
+        $('#tasks').append(TAG.panel(this.title));
+        // TODO グループのタスクをリスト表示
+        break;
+    }
   });
 });
 
@@ -41,6 +49,12 @@ ipc.on('refresh', function(tasks) {
 //      ok, error
 //
 //-------------------------------------------------
+
+// グループ作成
+$('#postGroup').on('click', function () {
+  ipc.send('post-group', $('#groupName').val());
+  $('#groupName').val('');
+});
 
 // 投稿
 $('#postTask').on('click', function () {
@@ -67,6 +81,19 @@ $(function () {
 //-------------------------------------------------
 
 var TAG = {};
+
+TAG.panel = function (title) {
+  var panel   = TAG.newDom('<div class="panel panel-primary">', '', '</div>');
+  var heading = TAG.newDom('<div class="panel-heading">', '', '</div>');
+  var body    = TAG.newDom('<div class="panel-body">', '', '</div>');
+  var title   = TAG.newDom('<h3 class="panel-title">', title, '</h3>');
+      heading.append(title)
+      panel.append(heading);
+      panel.append(body);
+  return panel;
+};
+
+
 TAG.list = function (text) { return TAG.newDom('<div class="list-group">', text, '</div>'); };
 TAG.item = function (name, detail) {
   var item = TAG.newDom('<a href="#" class="list-group-item">', '','</a>');
