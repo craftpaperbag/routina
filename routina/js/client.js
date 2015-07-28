@@ -14,6 +14,14 @@ console.log('client.js loaded');
 
 // 再描画
 ipc.on('refresh', function(tasks) {
+
+  // Storageがからの時だけ、#rootにpost-groupテンプレートを挿入
+  if ( tasks.length == 0 ) {
+    var $postGroupForm = $('#template div.post-group').clone();
+    $('div#root').append($postGroupForm);
+    $('div#root #postGroup').on('click', function () { postGroup('root') });
+  }
+
   $('#tasks').html('');
   $.each(tasks, function (i) {
     switch(this.type) {
@@ -31,7 +39,7 @@ ipc.on('refresh', function(tasks) {
         });
         $('#tasks div#' + groupId + ' div.panel-body').append($list);
         // タスクフォームを表示
-        $postTaskForm = $('#templatePostTask div.post-task').clone();
+        $postTaskForm = $('#template div.post-task').clone();
         $('#tasks div#' + groupId + ' div.panel-body').append($postTaskForm);
         // タスクフォームにイベント設定
         $('div#'+ groupId +' #postTask').on('click', function () { postTask(groupId) });
@@ -62,10 +70,14 @@ ipc.on('refresh', function(tasks) {
 //-------------------------------------------------
 
 // グループ作成
-$('#postGroup').on('click', function () {
-  ipc.send('post-group', $('#groupName').val());
-  $('#groupName').val('');
-});
+
+function postGroup(groupId) {
+  // 最初のグループの場合、groupIdはrootになる
+  ipc.send('post-group',
+      $('div#' + groupId + ' #groupName').val()
+  );
+  $('div#' + groupId + ' #groupName').val('');
+}
 
 // 投稿
 
@@ -84,7 +96,7 @@ function postTask(groupId) {
 // TODO mainからリストを受け取って描画する
 
 $(function () {
-  $('#tasks').text('(no task)');
+  ipc.emit('refresh', []);
 });
 
 //-------------------------------------------------

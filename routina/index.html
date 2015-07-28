@@ -46,32 +46,13 @@
         -->
         <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 
-          <!-- post group -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Group</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-                <form>
-                  <tr>
-                    <td>
-                      <input type="text" id="groupName" placeholder="new Group..." class="form-control"/>
-                    </td>
-                    <td>
-                      <button id="postGroup" type="button" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-plus"></span>
-                      </button>
-                    </td>
-                  </tr>
-                </form>
-            </tbody>
-          </table>
+          <!-- initial form area -->
+          <div id="root">
+          </div>
 
-          <!-- template of post task -->
-          <div id="templatePostTask" style="display: none;">
+          <!--  TEMPLATES -->
+          <div id="template" style="display: none;">
+            <!-- template of post task -->
             <div class="post-task">
               <form class="form-horizontal">
                 <div class="form-group">
@@ -79,7 +60,22 @@
                   <div class="form-inline col-xs-9">
                     <input type="text" id="taskName" placeholder="task..." class="form-control"/>
                     <input type="text" id="taskDetail" placeholder="about this task..." class="form-control"/>
-                    <button id="postTask" type="button" class="btn btn-primary">
+                    <button id="postTask" type="button">
+                      <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- template of post group -->
+            <div class="post-group">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="control-label col-xs-3">new Group</label>
+                  <div class="form-inline col-xs-9">
+                    <input type="text" id="groupName" placeholder="group..." class="form-control"/>
+                    <button id="postGroup" type="button">
                       <span class="glyphicon glyphicon-plus"></span>
                     </button>
                   </div>
