@@ -81,19 +81,29 @@ ipc.on('post-group', function (event, groupId, title) {
   var newGroupId = '';
   if (groupId == 'root') {
     newGroupId = 'group0'
+    // 最初のグループをストレージに追加
+    Storage.push({
+      type: 'group',
+      groupId: newGroupId,
+      title: title,
+      tasks: []
+    });
   } else {
-    // TODO グループを探す
+    // グループを探す
+    // TODO 重複した処理
+    var group = Helper.findGroup(groupId);
     var gi = Helper.childGroups(groupId).length;
     newGroupId = groupId + '-' + gi;
+    console.log('newGroupId: ' + newGroupId);
+    // グループをストレージに追加
+    group.tasks.push({
+      type: 'group',
+      groupId: newGroupId,
+      title: title,
+      tasks: []
+    });
   }
 
-  // グループをストレージに追加
-  Storage.push({
-    type: 'group',
-    groupId: newGroupId,
-    title: title,
-    tasks: []
-  });
 
   // レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);

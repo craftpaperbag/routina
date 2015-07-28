@@ -12,20 +12,25 @@ Helper.prototype.setStorage = function (s) {
 //--------------------------------------------
 // for storage
 
-Helper.prototype.childGroups = function (gid) {
-  var gida = gid.sub('group').split('-');
-  
+Helper.prototype.findGroup = function (gid) {
+  var gida = gid.replace('group', '').split('-');
   var pointer = this.Storage;
   var found = null;
   for (var i = 0; i < gida.length; i++) {
+    console.log('search:'+i);
     var counter = -1;
     for (var j = 0; j < pointer.length; j++) {
       //    group0-1-2
       // => group 0 - 1 - 2
       // => [0,1,2]
+      console.log('  type: '+ pointer[j].type);
+      console.log('    counter: '+ counter);
       if (pointer[j].type == 'group') {
         counter ++;
+        console.log('    counter up: '+ counter);
+        console.log('    gida: '+ gida[i]);
         if (counter == gida[i]) {
+          console.log('      found group:' + pointer[j].groupId);
           found = pointer[j];
           pointer = pointer[j].tasks;
           break;
@@ -34,9 +39,16 @@ Helper.prototype.childGroups = function (gid) {
     }
   }
 
+  return found;
+};
+
+Helper.prototype.childGroups = function (gid) {
+  var found = this.findGroup(gid);
+
   // groupを見つけたか？
-  if ( !!found && found.groupId == gid ) {
+  if ( found !== null ) {
     var childGroups = [];
+    var pointer = found.tasks;
     for (var i = 0; i < pointer.length; i ++ ) {
       if (pointer[i].type == 'group') {
         console.log('childGroups: child '+i);
@@ -45,8 +57,8 @@ Helper.prototype.childGroups = function (gid) {
     }
     return childGroups
   } else {
-    console.error('childGroups: group not found(gid='+gid+')');
-    return -1;
+    console.error('childGroups: group not found(gid='+gid+', found='+found+')');
+    return [];
   }
 
 };

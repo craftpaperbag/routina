@@ -25,45 +25,28 @@ ipc.on('refresh', function(tasks) {
     var $postGroupForm = $('#template div.post-group').clone();
     $('div#root').append($postGroupForm);
     $('div#root #postGroup').on('click', function () { postGroup('root') });
+  } else {
+    // 再帰的描画
+    procRenderItem($('#tasks'), tasks[0], 'group0');
   }
-
-  $.each(tasks, function (i) {
-    switch(this.type) {
-      case 'task':
-        // TODO タスクはグループに属する
-        console.log('ignore root task');
-        break;
-      case 'group':
-        var groupId = this.groupId;
-        $('#tasks').append(TAG.panel(this.title, groupId));
-        // グループのタスクをリスト表示
-        $list = TAG.list();
-        $.each(this.tasks, function (i) {
-          $list.append(TAG.item(this.name, this.detail));
-        });
-        $('#tasks div#' + groupId + ' div.panel-body').append($list);
-        // タスクフォームを表示
-        $postTaskForm = $('#template div.post-task').clone();
-        $('#tasks div#' + groupId + ' div.panel-body').append($postTaskForm);
-        // タスクフォームにイベント設定
-        $('div#'+ groupId +' #postTask').on('click', function () { postTask(groupId) });
-        break;
-    }
-  });
 });
 
 // 再帰的に、タスクなのかgroupなのかわからない連中を描画する
 // TODO 再帰呼び出し回数に制限を設ける
 function procRenderItem($current, item, groupId) {
-  // #group0
+  console.log('render type:' + item.type);
+  // for example
+  //
+  //
+  // group0    <-- groupId
   //   task
   //   task
-  //   #group0-0
+  //   group0-0 <-- item
   //     task
   //     task
-  //     #group0-0-0
-  //     #group0-0-1
-  //   #group0-1
+  //     group0-0-0
+  //     group0-0-1
+  //   group0-1
   //   task...
   //
   //   and so on
@@ -77,14 +60,27 @@ function procRenderItem($current, item, groupId) {
   //     タスクフォームを追加して、
   //     終了
   // 
-  switch(this.type) {
+  switch(item.type) {
     case 'task':
-      $list.append(TAG.item(this.name, this.detail));
+      $current.append(TAG.item(item.name, item.detail));
       break;
     case 'group':
-      var childGroupId = groupId + '-';
-      $('#tasks').append(TAG.panel(this.title, groupId));
-
+      console.log('       gid :' + item.groupId);
+      $current.append(TAG.panel(item.title, item.groupId));
+      $.each(item.tasks, function () {
+        // 再帰呼び出し
+        procRenderItem($('div#' + item.groupId + ' div.panel-body'), this, item.groupId);
+      });
+      // グループフォームを表示
+      var $postGroupForm = $('#template div.post-group').clone();
+      $('#tasks div#' + item.groupId + ' div.panel-body').append($postGroupForm);
+      $('div#'+ item.groupId +' #postGroup').unbind();
+      $('div#'+ item.groupId +' #postGroup').on('click', function () { postGroup(item.groupId) });
+      // タスクフォームを表示
+      var $postTaskForm = $('#template div.post-task').clone();
+      $('#tasks div#' + item.groupId + ' div.panel-body').append($postTaskForm);
+      $('div#'+ item.groupId +' #postTask').unbind();
+      $('div#'+ item.groupId +' #postTask').on('click', function () { postTask(item.groupId) });
       break;
   }
 }
