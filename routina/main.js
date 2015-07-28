@@ -31,6 +31,8 @@ var menu = Menu.buildFromTemplate([
   {
     label: 'Routina',
     submenu: [
+      {label: 'Debug', accelerator: 'Command+D', click: function () { mainWindow.openDevTools(); }},
+      {type: 'separator'},
       {label: 'Quit', accelerator: 'Command+Q', click: function () { app.quit(); }}
     ]
   },
@@ -50,8 +52,6 @@ app.on('ready', function (){
     console.log('main window closed');
     mainWindow = null;
   });
-  // TODO ちょっとこれはない
-  mainWindow.openDevTools();
 });
 // ---------------------------------------------------------
 // IPC
