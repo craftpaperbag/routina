@@ -34,14 +34,13 @@ ipc.on('refresh', function(tasks) {
 // 再帰的に、タスクなのかgroupなのかわからない連中を描画する
 // TODO 再帰呼び出し回数に制限を設ける
 function procRenderItem($current, item, groupId) {
-  console.log('render type:' + item.type);
   // for example
   //
   //
   // group0    <-- groupId
   //   task
   //   task
-  //   group0-0 <-- item
+  // * group0-0 <-- item
   //     task
   //     task
   //     group0-0-0
@@ -65,22 +64,21 @@ function procRenderItem($current, item, groupId) {
       $current.append(TAG.item(item.name, item.detail));
       break;
     case 'group':
-      console.log('       gid :' + item.groupId);
       $current.append(TAG.panel(item.title, item.groupId));
       $.each(item.tasks, function () {
         // 再帰呼び出し
-        procRenderItem($('div#' + item.groupId + ' div.panel-body'), this, item.groupId);
+        procRenderItem($('div#' + item.groupId + ' > div.panel-body'), this, item.groupId);
       });
       // グループフォームを表示
       var $postGroupForm = $('#template div.post-group').clone();
-      $('#tasks div#' + item.groupId + ' div.panel-body').append($postGroupForm);
-      $('div#'+ item.groupId +' #postGroup').unbind();
-      $('div#'+ item.groupId +' #postGroup').on('click', function () { postGroup(item.groupId) });
+      $('#tasks div#' + item.groupId + ' > div.panel-body').append($postGroupForm);
+      $('div#'+ item.groupId +' > div.panel-body > .post-group #postGroup').unbind();
+      $('div#'+ item.groupId +' > div.panel-body > .post-group #postGroup').on('click', function () { postGroup(item.groupId) });
       // タスクフォームを表示
       var $postTaskForm = $('#template div.post-task').clone();
-      $('#tasks div#' + item.groupId + ' div.panel-body').append($postTaskForm);
-      $('div#'+ item.groupId +' #postTask').unbind();
-      $('div#'+ item.groupId +' #postTask').on('click', function () { postTask(item.groupId) });
+      $('#tasks div#' + item.groupId + ' > div.panel-body').append($postTaskForm);
+      $('div#'+ item.groupId +' > div.panel-body > .post-task #postTask').unbind();
+      $('div#'+ item.groupId +' > div.panel-body > .post-task #postTask').on('click', function () { postTask(item.groupId) });
       break;
   }
 }

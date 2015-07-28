@@ -17,20 +17,14 @@ Helper.prototype.findGroup = function (gid) {
   var pointer = this.Storage;
   var found = null;
   for (var i = 0; i < gida.length; i++) {
-    console.log('search:'+i);
     var counter = -1;
     for (var j = 0; j < pointer.length; j++) {
       //    group0-1-2
       // => group 0 - 1 - 2
       // => [0,1,2]
-      console.log('  type: '+ pointer[j].type);
-      console.log('    counter: '+ counter);
       if (pointer[j].type == 'group') {
         counter ++;
-        console.log('    counter up: '+ counter);
-        console.log('    gida: '+ gida[i]);
         if (counter == gida[i]) {
-          console.log('      found group:' + pointer[j].groupId);
           found = pointer[j];
           pointer = pointer[j].tasks;
           break;
@@ -51,7 +45,6 @@ Helper.prototype.childGroups = function (gid) {
     var pointer = found.tasks;
     for (var i = 0; i < pointer.length; i ++ ) {
       if (pointer[i].type == 'group') {
-        console.log('childGroups: child '+i);
         childGroups.push(pointer[i]);
       }
     }

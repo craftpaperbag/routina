@@ -75,7 +75,7 @@ ipc.on('post-task', function (event, groupId, name, detail) {
 // 注意：groupIdは作成時に割り当てる。
 // クライアントは関与できない
 ipc.on('post-group', function (event, groupId, title) {
-  console.log('post-group received.');
+  console.log('post-group in ' + groupId);
 
   // 名付けをする。
   var newGroupId = '';
@@ -94,7 +94,6 @@ ipc.on('post-group', function (event, groupId, title) {
     var group = Helper.findGroup(groupId);
     var gi = Helper.childGroups(groupId).length;
     newGroupId = groupId + '-' + gi;
-    console.log('newGroupId: ' + newGroupId);
     // グループをストレージに追加
     group.tasks.push({
       type: 'group',
@@ -103,6 +102,7 @@ ipc.on('post-group', function (event, groupId, title) {
       tasks: []
     });
   }
+  console.log('newGroupId: ' + newGroupId);
 
 
   // レンダラ側でリフレッシュ
