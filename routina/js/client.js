@@ -15,6 +15,11 @@ console.log('client.js loaded');
 // 再描画
 ipc.on('refresh', function(tasks) {
 
+  // 全クリア
+  // FIXME: 差分更新
+  $('#tasks').html('');
+  $('#root').html('');
+
   // Storageがからの時だけ、#rootにpost-groupテンプレートを挿入
   if ( tasks.length == 0 ) {
     var $postGroupForm = $('#template div.post-group').clone();
@@ -22,7 +27,6 @@ ipc.on('refresh', function(tasks) {
     $('div#root #postGroup').on('click', function () { postGroup('root') });
   }
 
-  $('#tasks').html('');
   $.each(tasks, function (i) {
     switch(this.type) {
       case 'task':
@@ -30,7 +34,7 @@ ipc.on('refresh', function(tasks) {
         console.log('ignore root task');
         break;
       case 'group':
-        var groupId = 'group' + i;
+        var groupId = this.groupId;
         $('#tasks').append(TAG.panel(this.title, groupId));
         // グループのタスクをリスト表示
         $list = TAG.list();
@@ -47,6 +51,43 @@ ipc.on('refresh', function(tasks) {
     }
   });
 });
+
+// 再帰的に、タスクなのかgroupなのかわからない連中を描画する
+// TODO 再帰呼び出し回数に制限を設ける
+function procRenderItem($current, item, groupId) {
+  // #group0
+  //   task
+  //   task
+  //   #group0-0
+  //     task
+  //     task
+  //     #group0-0-0
+  //     #group0-0-1
+  //   #group0-1
+  //   task...
+  //
+  //   and so on
+
+  // タスクの場合
+  //     カレントにタスクを追加して終了
+  // グループの場合
+  //     カレントにグループを追加して、
+  //     tasksの各要素に再帰呼び出しして、
+  //     グループフォームを追加して、
+  //     タスクフォームを追加して、
+  //     終了
+  // 
+  switch(this.type) {
+    case 'task':
+      $list.append(TAG.item(this.name, this.detail));
+      break;
+    case 'group':
+      var childGroupId = groupId + '-';
+      $('#tasks').append(TAG.panel(this.title, groupId));
+
+      break;
+  }
+}
 
 //-------------------------------------------------
 //
@@ -74,6 +115,7 @@ ipc.on('refresh', function(tasks) {
 function postGroup(groupId) {
   // 最初のグループの場合、groupIdはrootになる
   ipc.send('post-group',
+      groupId,
       $('div#' + groupId + ' #groupName').val()
   );
   $('div#' + groupId + ' #groupName').val('');

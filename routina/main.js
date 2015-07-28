@@ -16,6 +16,7 @@ require('crash-reporter').start();
 var mainWindow = null;
 // TODO いけてないのでなんとかする
 var Storage = [];
+Helper.setStorage(Storage);
 
 app.on('window-all-closed', function () {
   console.log('all window closed');
@@ -71,11 +72,28 @@ ipc.on('post-task', function (event, groupId, name, detail) {
   event.sender.send('refresh', Storage);
 });
 
-ipc.on('post-group', function (event, title) {
+// 注意：groupIdは作成時に割り当てる。
+// クライアントは関与できない
+ipc.on('post-group', function (event, groupId, title) {
   console.log('post-group received.');
 
+  // 名付けをする。
+  var newGroupId = '';
+  if (groupId == 'root') {
+    newGroupId = 'group0'
+  } else {
+    // TODO グループを探す
+    var gi = Helper.childGroups(groupId).length;
+    newGroupId = groupId + '-' + gi;
+  }
+
   // グループをストレージに追加
-  Storage.push({type: 'group', title: title, tasks: [] });
+  Storage.push({
+    type: 'group',
+    groupId: newGroupId,
+    title: title,
+    tasks: []
+  });
 
   // レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);
