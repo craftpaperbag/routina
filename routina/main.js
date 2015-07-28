@@ -50,6 +50,8 @@ app.on('ready', function (){
     console.log('main window closed');
     mainWindow = null;
   });
+  // TODO ちょっとこれはない
+  mainWindow.openDevTools();
 });
 // ---------------------------------------------------------
 // IPC
@@ -62,19 +64,19 @@ ipc.on('post-task', function (event, groupId, name, detail) {
   var index = Number(groupId.match(/[0-9]+/));
   console.log('group index: ' + index);
 
-  // TODO: タスクをストレージに追加
+  // タスクをストレージに追加
   Storage[index].tasks.push({type: 'task', name: name, detail: detail});
 
-  // TODO: レンダラ側でリフレッシュ
+  // レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);
 });
 
 ipc.on('post-group', function (event, title) {
   console.log('post-group received.');
 
-  // TODO: グループをストレージに追加
+  // グループをストレージに追加
   Storage.push({type: 'group', title: title, tasks: [] });
 
-  // TODO: レンダラ側でリフレッシュ
+  // レンダラ側でリフレッシュ
   event.sender.send('refresh', Storage);
 });
